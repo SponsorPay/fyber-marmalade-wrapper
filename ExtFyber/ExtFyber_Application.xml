@@ -1,0 +1,57 @@
+<activity android:name="com.fyber.ads.videos.RewardedVideoActivity" android:configChanges="keyboardHidden|orientation|screenSize"/>
+
+<service android:name="com.fyber.cache.CacheVideoDownloadService" android:exported="false"/>
+
+<activity android:name="com.jirbo.adcolony.AdColonyOverlay"
+    android:configChanges="keyboardHidden|orientation|screenSize"
+    android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+
+<activity android:name="com.jirbo.adcolony.AdColonyFullscreen"
+    android:configChanges="keyboardHidden|orientation|screenSize"
+    android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+
+<activity android:name="com.jirbo.adcolony.AdColonyBrowser"
+    android:configChanges="keyboardHidden|orientation|screenSize"
+    android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+
+<activity android:name="com.fyber.mediation.adcolony.rv.VideoProxyActivity" />
+
+<activity android:name="com.fyber.mediation.adcolony.interstitial.InterstitialProxyActivity" />
+
+
+<activity android:name="com.vungle.publisher.FullScreenAdActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+        />
+<!-- <service android:name="com.vungle.publisher.VungleService" android:exported="false" /> -->
+
+
+<activity android:name="com.applovin.adview.AppLovinInterstitialActivity" />
+<activity android:name="com.applovin.adview.AppLovinConfirmationActivity" />
+<!-- set applovin_sdk_key in data/res/values/strings.xml for each game specifically, becuase the sdk_key is different for each game -->
+<meta-data android:name="applovin.sdk.key" android:value="@string/applovin_sdk_key"  />
+
+
+<!-- HyprMX-->
+<activity
+    android:name="com.hyprmx.android.sdk.activity.HyprMXOfferViewerActivity"
+    android:configChanges="keyboardHidden|orientation|screenSize"
+    android:label="HyprMX SDK"
+    android:launchMode="singleTop" />
+<activity
+    android:name="com.hyprmx.android.sdk.activity.HyprMXRequiredInformationActivity"
+    android:configChanges="keyboardHidden|orientation|screenSize"/>
+<activity
+    android:name="com.hyprmx.android.sdk.activity.HyprMXNoOffersActivity"
+    android:configChanges="keyboardHidden|orientation|screenSize" />
+<activity
+    android:name="com.hyprmx.android.sdk.activity.HyprMXWebTrafficActivity"
+    android:configChanges="keyboardHidden|orientation|screenSize" />
+<activity
+    android:name="com.hyprmx.android.sdk.activity.HyprMXVideoPlayerActivity"
+    android:configChanges="orientation|keyboardHidden|screenSize" />
+
+<!-- HyprMX-Fyber helper activity -->
+<activity
+    android:name="com.fyber.mediation.hyprmx.rv.HyprMXVideoMediationActivity"
+    android:configChanges="keyboardHidden|orientation|screenSize" />

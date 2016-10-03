@@ -1,0 +1,34 @@
+#!/usr/bin/env mkb
+# Builder mkb file for the java portion of the ExtFyber extension on android
+platform JAVA
+
+files
+{
+    (source/android)
+    ExtFyber.java
+    FyberActivityFactory.java
+    FyberActivity.java
+}
+
+librarypath "$MARMALADE_ROOT/s3e/deploy/plugins/android/android.jar"
+librarypath "$MARMALADE_ROOT/s3e/loader/android/s3e_release.jar"
+librarypath "$MARMALADE_JUICE_ROOT/extensions/dependencies/libs/google-play-services.7095000.jar"
+librarypath "$MARMALADE_JUICE_ROOT/extensions/dependencies/libs/android-support-v4.jar"
+librarypath "$MARMALADE_JUICE_ROOT/MainActivity/MainActivity.jar"
+librarypath "3rdPartyLibs/fyber-sdk-8.3.1.jar"
+librarypath "3rdPartyLibs/fyber-adcolony-2.3.3-r1.jar"
+librarypath "3rdPartyLibs/fyber-annotations-1.1.0.jar"
+librarypath "3rdPartyLibs/fyber-annotations-compiler-1.2.0.jar"
+librarypath "3rdPartyLibs/guava-18.0.jar"
+librarypath "3rdPartyLibs/javapoet-1.5.1.jar"
+librarypath "3rdPartyLibs/javassist-3.18.2-GA.jar"
+librarypath "3rdPartyLibs/reflections-0.9.10.jar"
+librarypath "3rdPartyLibs/fyber-vungle-3.3.4-r1.jar"
+librarypath "3rdPartyLibs/nineoldandroids-2.4.0.jar"
+librarypath "3rdPartyLibs/javax.inject-1.jar"
+librarypath "3rdPartyLibs/dagger-1.2.2.jar"
+librarypath "3rdPartyLibs/fyber-applovin-6.1.5-r1.jar"
+librarypath "3rdPartyLibs/fyber-hyprmx-4.0.1-r1.jar"
+
+
+option output-name=lib/android/ExtFyber.jar

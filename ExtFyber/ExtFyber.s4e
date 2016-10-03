@@ -1,0 +1,36 @@
+callbacks
+
+include:
+#include <s3eTypes.h>
+
+typedef enum 
+{
+    EXTFYBER_NOTIFY_STATUS_CHANGE,
+
+    EXTFYBER_CALLBACK_MAX
+} ExtFyberCallback;
+
+typedef enum
+{
+	EXT_FYBER_STARTED,
+	EXT_FYBER_CLOSE_FINISHED,
+	EXT_FYBER_CLOSE_ABORTED,
+	EXT_FYBER_ERROR,
+	EXT_FYBER_AD_AVAILABLE = 101,
+	EXT_FYBER_AD_NOT_AVAILABLE = 102,
+	EXT_FYBER_AD_REQUEST_ERROR = 103
+} ExtFyberStatus;
+
+typedef void (*ExtFyberStatusCallbackFn)(ExtFyberStatus status);
+
+functions:
+
+void fyber_marmalade_setup(const char* appId, const char* securityToken, const char* userId, const char* bucketId, const char* conditionGroupId, ExtFyberStatusCallbackFn fn) run_on_os_thread
+ 
+void requestOffers() run_on_os_thread
+
+int showAd() run_on_os_thread
+
+void fyber_cache_pause_download()
+
+void fyber_cache_resume_download()
