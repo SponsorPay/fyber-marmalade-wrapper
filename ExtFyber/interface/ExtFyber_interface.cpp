@@ -11,38 +11,17 @@
 #include "ExtFyber.h"
 
 
+// Define S3E_EXT_SKIP_LOADER_CALL_LOCK on the user-side to skip LoaderCallStart/LoaderCallDone()-entry.
+// e.g. in s3eNUI this is used for generic user-side IwUI-based implementation.
 #ifndef S3E_EXT_SKIP_LOADER_CALL_LOCK
-// For MIPs (and WP8) platform we do not have asm code for stack switching
-// implemented. So we make LoaderCallStart call manually to set GlobalLock
-#if defined __mips || defined S3E_ANDROID_X86 || (defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP))
+#if (defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP)) || defined I3D_ARCH_NACLX86_64
+// For platforms missing stack-switching (WP8, NaCl, etc.) make loader-entry via LoaderCallStart/LoaderCallDone() on the user-side.
 #define LOADER_CALL_LOCK
 #endif
 #endif
 
-/**
- * Definitions for functions types passed to/from s3eExt interface
- */
-typedef  s3eResult(*ExtFyberRegister_t)(ExtFyberCallback cbid, s3eCallback fn, void* userData);
-typedef  s3eResult(*ExtFyberUnRegister_t)(ExtFyberCallback cbid, s3eCallback fn);
-typedef       void(*fyber_marmalade_setup_t)(const char* appId, const char* securityToken, const char* userId, const char* bucketId, const char* conditionGroupId, ExtFyberStatusCallbackFn fn);
-typedef       void(*requestOffers_t)();
-typedef        int(*showAd_t)();
-typedef       void(*fyber_cache_pause_download_t)();
-typedef       void(*fyber_cache_resume_download_t)();
 
-/**
- * struct that gets filled in by ExtFyberRegister
- */
-typedef struct ExtFyberFuncs
-{
-    ExtFyberRegister_t m_ExtFyberRegister;
-    ExtFyberUnRegister_t m_ExtFyberUnRegister;
-    fyber_marmalade_setup_t m_fyber_marmalade_setup;
-    requestOffers_t m_requestOffers;
-    showAd_t m_showAd;
-    fyber_cache_pause_download_t m_fyber_cache_pause_download;
-    fyber_cache_resume_download_t m_fyber_cache_resume_download;
-} ExtFyberFuncs;
+#include "ExtFyber_interface.h"
 
 static ExtFyberFuncs g_Ext;
 static bool g_GotExt = false;
@@ -95,13 +74,13 @@ s3eResult ExtFyberRegister(ExtFyberCallback cbid, s3eCallback fn, void* userData
         return S3E_RESULT_ERROR;
 
 #ifdef LOADER_CALL_LOCK
-    s3eDeviceLoaderCallStart(S3E_TRUE, NULL);
+    s3eDeviceLoaderCallStart(S3E_TRUE, (void*)g_Ext.m_ExtFyberRegister);
 #endif
 
     s3eResult ret = g_Ext.m_ExtFyberRegister(cbid, fn, userData);
 
 #ifdef LOADER_CALL_LOCK
-    s3eDeviceLoaderCallDone(S3E_TRUE, NULL);
+    s3eDeviceLoaderCallDone(S3E_TRUE, (void*)g_Ext.m_ExtFyberRegister);
 #endif
 
     return ret;
@@ -115,13 +94,13 @@ s3eResult ExtFyberUnRegister(ExtFyberCallback cbid, s3eCallback fn)
         return S3E_RESULT_ERROR;
 
 #ifdef LOADER_CALL_LOCK
-    s3eDeviceLoaderCallStart(S3E_TRUE, NULL);
+    s3eDeviceLoaderCallStart(S3E_TRUE, (void*)g_Ext.m_ExtFyberUnRegister);
 #endif
 
     s3eResult ret = g_Ext.m_ExtFyberUnRegister(cbid, fn);
 
 #ifdef LOADER_CALL_LOCK
-    s3eDeviceLoaderCallDone(S3E_TRUE, NULL);
+    s3eDeviceLoaderCallDone(S3E_TRUE, (void*)g_Ext.m_ExtFyberUnRegister);
 #endif
 
     return ret;
@@ -135,13 +114,13 @@ void fyber_marmalade_setup(const char* appId, const char* securityToken, const c
         return;
 
 #ifdef LOADER_CALL_LOCK
-    s3eDeviceLoaderCallStart(S3E_TRUE, NULL);
+    s3eDeviceLoaderCallStart(S3E_TRUE, (void*)g_Ext.m_fyber_marmalade_setup);
 #endif
 
     g_Ext.m_fyber_marmalade_setup(appId, securityToken, userId, bucketId, conditionGroupId, fn);
 
 #ifdef LOADER_CALL_LOCK
-    s3eDeviceLoaderCallDone(S3E_TRUE, NULL);
+    s3eDeviceLoaderCallDone(S3E_TRUE, (void*)g_Ext.m_fyber_marmalade_setup);
 #endif
 
     return;
@@ -155,13 +134,13 @@ void requestOffers()
         return;
 
 #ifdef LOADER_CALL_LOCK
-    s3eDeviceLoaderCallStart(S3E_TRUE, NULL);
+    s3eDeviceLoaderCallStart(S3E_TRUE, (void*)g_Ext.m_requestOffers);
 #endif
 
     g_Ext.m_requestOffers();
 
 #ifdef LOADER_CALL_LOCK
-    s3eDeviceLoaderCallDone(S3E_TRUE, NULL);
+    s3eDeviceLoaderCallDone(S3E_TRUE, (void*)g_Ext.m_requestOffers);
 #endif
 
     return;
@@ -175,13 +154,13 @@ int showAd()
         return;
 
 #ifdef LOADER_CALL_LOCK
-    s3eDeviceLoaderCallStart(S3E_TRUE, NULL);
+    s3eDeviceLoaderCallStart(S3E_TRUE, (void*)g_Ext.m_showAd);
 #endif
 
     int ret = g_Ext.m_showAd();
 
 #ifdef LOADER_CALL_LOCK
-    s3eDeviceLoaderCallDone(S3E_TRUE, NULL);
+    s3eDeviceLoaderCallDone(S3E_TRUE, (void*)g_Ext.m_showAd);
 #endif
 
     return ret;
@@ -195,13 +174,13 @@ void fyber_cache_pause_download()
         return;
 
 #ifdef LOADER_CALL_LOCK
-    s3eDeviceLoaderCallStart(S3E_TRUE, NULL);
+    s3eDeviceLoaderCallStart(S3E_TRUE, (void*)g_Ext.m_fyber_cache_pause_download);
 #endif
 
     g_Ext.m_fyber_cache_pause_download();
 
 #ifdef LOADER_CALL_LOCK
-    s3eDeviceLoaderCallDone(S3E_TRUE, NULL);
+    s3eDeviceLoaderCallDone(S3E_TRUE, (void*)g_Ext.m_fyber_cache_pause_download);
 #endif
 
     return;
@@ -215,13 +194,13 @@ void fyber_cache_resume_download()
         return;
 
 #ifdef LOADER_CALL_LOCK
-    s3eDeviceLoaderCallStart(S3E_TRUE, NULL);
+    s3eDeviceLoaderCallStart(S3E_TRUE, (void*)g_Ext.m_fyber_cache_resume_download);
 #endif
 
     g_Ext.m_fyber_cache_resume_download();
 
 #ifdef LOADER_CALL_LOCK
-    s3eDeviceLoaderCallDone(S3E_TRUE, NULL);
+    s3eDeviceLoaderCallDone(S3E_TRUE, (void*)g_Ext.m_fyber_cache_resume_download);
 #endif
 
     return;

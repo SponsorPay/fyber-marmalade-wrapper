@@ -22,29 +22,29 @@ extern void ExtFyberTerminate();
 // On platforms that use a seperate UI/OS thread we can autowrap functions
 // here.   Note that we can't use the S3E_USE_OS_THREAD define since this
 // code is oftern build standalone, outside the main loader build.
-#if defined I3D_OS_IPHONE || defined I3D_OS_OSX || defined I3D_OS_LINUX || defined I3D_OS_WINDOWS
+#if defined I3D_OS_IPHONE || defined I3D_OS_TVOS ||defined I3D_OS_OSX || defined I3D_OS_LINUX || defined I3D_OS_WINDOWS
 
 static void fyber_marmalade_setup_wrap(const char* appId, const char* securityToken, const char* userId, const char* bucketId, const char* conditionGroupId, ExtFyberStatusCallbackFn fn)
 {
     IwTrace(EXTFYBER_VERBOSE, ("calling ExtFyber func on main thread: fyber_marmalade_setup"));
     s3eEdkThreadRunOnOS((s3eEdkThreadFunc)fyber_marmalade_setup, 6, appId, securityToken, userId, bucketId, conditionGroupId, fn);
 }
-
 static void requestOffers_wrap()
 {
     IwTrace(EXTFYBER_VERBOSE, ("calling ExtFyber func on main thread: requestOffers"));
     s3eEdkThreadRunOnOS((s3eEdkThreadFunc)requestOffers, 0);
 }
-
 static int showAd_wrap()
 {
     IwTrace(EXTFYBER_VERBOSE, ("calling ExtFyber func on main thread: showAd"));
     return (int)(intptr_t)s3eEdkThreadRunOnOS((s3eEdkThreadFunc)showAd, 0);
 }
-
 #define fyber_marmalade_setup fyber_marmalade_setup_wrap
+
 #define requestOffers requestOffers_wrap
+
 #define showAd showAd_wrap
+
 
 #endif
 

@@ -42,7 +42,8 @@ S3E_BEGIN_C_DECL
 // \endcond
 
 /**
- * Returns S3E_TRUE if the ExtFyber extension is available.
+ * Report if the ExtFyber extension is available.
+ * @return S3E_TRUE if the ExtFyber extension is available. S3E_FALSE otherwise.
  */
 s3eBool ExtFyberAvailable();
 
@@ -52,7 +53,7 @@ s3eBool ExtFyberAvailable();
  * The available callback types are listed in @ref ExtFyberCallback.
  * @param cbid ID of the event for which to register.
  * @param fn callback function.
- * @param userdata Value to pass to the @e userdata parameter of @e NotifyFunc.
+ * @param userData Value to pass to the @e userData parameter of @e NotifyFunc.
  * @return
  *  - @ref S3E_RESULT_SUCCESS if no error occurred.
  *  - @ref S3E_RESULT_ERROR if the operation failed.\n
@@ -60,6 +61,7 @@ s3eBool ExtFyberAvailable();
  * @see ExtFyberUnRegister
  * @note For more information on the system data passed as a parameter to the callback
  * registered using this function, see the @ref ExtFyberCallback enum.
+ * @note It is not necessary to define a return value for any registered callback.
  */
 s3eResult ExtFyberRegister(ExtFyberCallback cbid, s3eCallback fn, void* userData);
 
@@ -70,9 +72,6 @@ s3eResult ExtFyberRegister(ExtFyberCallback cbid, s3eCallback fn, void* userData
  * @return
  * - @ref S3E_RESULT_SUCCESS if no error occurred.
  * - @ref S3E_RESULT_ERROR if the operation failed.\n
- * @note For more information on the systemData passed as a parameter to the callback
- * registered using this function, see the ExtFyberCallback enum.
- * @note It is not necessary to define a return value for any registered callback.
  * @see ExtFyberRegister
  */
 s3eResult ExtFyberUnRegister(ExtFyberCallback cbid, s3eCallback fn);
