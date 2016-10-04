@@ -169,10 +169,10 @@ void requestOffers_platform()
     env->CallVoidMethod(g_Obj, g_requestOffers);
 }
 
-int showAd_platform()
+bool showAd_platform()
 {
     JNIEnv* env = s3eEdkJNIGetEnv();
-    return (int)env->CallIntMethod(g_Obj, g_showAd);
+    return env->CallBooleanMethod(g_Obj, g_showAd);
 }
 
 void fyber_cache_pause_download_platform()

@@ -29,7 +29,7 @@ void fyber_marmalade_setup(const char* appId, const char* securityToken, const c
  
 void requestOffers() run_on_os_thread
 
-int showAd() run_on_os_thread
+bool showAd() run_on_os_thread
 
 void fyber_cache_pause_download()
 

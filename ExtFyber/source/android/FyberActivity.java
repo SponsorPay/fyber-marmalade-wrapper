@@ -1,7 +1,5 @@
 package com.teamlava.fyberwrapper;
 
-import com.android.mainactivity.MainActivity;
-
 import com.fyber.ads.AdFormat;
 import com.fyber.ads.videos.RewardedVideoActivity;
 import com.fyber.annotations.FyberSDK;
@@ -17,13 +15,14 @@ import com.fyber.requesters.VirtualCurrencyRequester;
 import com.fyber.utils.FyberLogger;
 
 import com.jirbo.adcolony.AdColony;
+import com.ideaworks3d.marmalade.LoaderAPI;
 
 import android.content.Intent;
 import android.util.Log;
 import android.os.Bundle;
 
 @FyberSDK
-public class FyberActivity implements MainActivity.Listener, RequestCallback {
+public class FyberActivity implements RequestCallback {
 	protected static final int INTERSTITIAL_REQUEST_CODE = 8792;
 	protected static final int OFFERWALL_REQUEST_CODE = 8795;
 	protected static final int REWARDED_VIDEO_REQUEST_CODE = 8796;
@@ -37,8 +36,6 @@ public class FyberActivity implements MainActivity.Listener, RequestCallback {
 	private static final int EXT_FYBER_AD_NOT_AVAILABLE = 102;
 	private static final int EXT_FYBER_AD_REQUEST_ERROR = 103;
 
-	private static final String APP_ID = "22915";  //sample app id, no need to change it.
-	private static final String SECURITY_TOKEN = "token"; //sample token, no need to change it.
 	private static final String TAG = "marmalade";
 	private static final String DEBUG_CONFIG_KEY = "ExtFyber_debug";
   
@@ -47,7 +44,7 @@ public class FyberActivity implements MainActivity.Listener, RequestCallback {
 	private boolean isRequestingState;
 	protected Intent intent;
 
-	public static FyberActivity singleton;
+	public static FyberActivity singleton = new FyberActivity();
 
 	protected int getRequestCode() {
 		return REWARDED_VIDEO_REQUEST_CODE;
@@ -59,55 +56,16 @@ public class FyberActivity implements MainActivity.Listener, RequestCallback {
 
 
 	void debugLog(String message) {
-        if (DEBUG_ENABLED) {
-        	Log.d(TAG, "FyberActivity:" + message);
-        	Log.d("[FYB]", "FyberActivity:" + message);
-        }
+        Log.d(TAG, "FyberActivity:" + message);
     }
-
-	public void onCreate(Bundle b) {
-    	DEBUG_ENABLED = MainActivity.getBooleanConfig(DEBUG_CONFIG_KEY);
-    	Log.d(TAG, "FyberActivity: DEBUG_ENABLED is " + DEBUG_ENABLED);
-
-		FyberLogger.enableLogging(DEBUG_ENABLED);
-        if (singleton != null)
-        {
-        	debugLog("FyberActivity created more than once, it's supposed to be a singleton from android-custom-activity");
-        	// throw new IllegalStateException("Tried to create a new FyberActivity"); 
-        }
-        singleton = this;
-        // requestOrShowAd();
-    }
-    
-    public void onStart() {
-        
-    }
-
-    public void onRestart() {
-        
-    }
-    
-    public void onStop() {
-        
-    }
-
-    public void onPause() {
-
-    }
-
-	public void onResume() {
-		if (AdColony.isConfigured()) {
-			debugLog("resume AdColony");
-			AdColony.resume(MainActivity.singleton);
-		}
-	}
 
 	public void setup(String appId, String securityToken, String userId, String bucketId, String conditionGroupId) {
+		FyberLogger.enableLogging(true);
 		try {
 			debugLog("setup appId = " + appId + "; securityToken = " + securityToken + "; userId = " + userId + "; bucketId = " + bucketId + "; conditionGroupId = " + conditionGroupId);
 
 // 			Fyber.Settings fyberSettings = Fyber
-// 					.with(APP_ID, MainActivity.singleton)
+// 					.with(APP_ID, LoaderAPI.getActivity())
 // 					.withSecurityToken(SECURITY_TOKEN)
 // // by default Fyber SDK will start precaching. If you wish to only start precaching at a later time you can uncomment this line and use 'CacheManager' to start, pause or resume on demand.
 // //					.withManualPrecaching()
@@ -119,7 +77,7 @@ public class FyberActivity implements MainActivity.Listener, RequestCallback {
 			//when you start Fyber SDK you get a Settings object that you can use to customise the SDK behaviour.
 			//Have a look at the method 'customiseFyberSettings' to learn more about possible customisation.
 			Fyber.Settings fyberSettings = Fyber
-					.with(appId, MainActivity.singleton)
+					.with(appId, LoaderAPI.getActivity())
 					.withSecurityToken(securityToken)
 // by default Fyber SDK will start precaching. If you wish to only start precaching at a later time you can uncomment this line and use 'CacheManager' to start, pause or resume on demand.
 //					.withManualPrecaching()
@@ -162,7 +120,7 @@ public class FyberActivity implements MainActivity.Listener, RequestCallback {
 			//if we already have an Intent, we start the ad Activity
 			if (isIntentAvailable()) {
 				//start the ad format specific Activity
-				MainActivity.singleton.startActivityForResult(intent, getRequestCode());
+				LoaderAPI.getActivity().startActivityForResult(intent, getRequestCode());
 				return true;
 			} else {
 				isRequestingState = true;
@@ -183,7 +141,7 @@ public class FyberActivity implements MainActivity.Listener, RequestCallback {
 				.create(this)
 						// you can add a virtual Currency Requester by chaining this extra method
 				// .withVirtualCurrencyRequester(getVirtualCurrencyRequester())
-				.request(MainActivity.singleton);
+				.request(LoaderAPI.getActivity());
 	}
 
 		@Override
@@ -244,4 +202,8 @@ public class FyberActivity implements MainActivity.Listener, RequestCallback {
 			}
 		}	
 	}
+
+    public static FyberActivity getInstance() {
+        return singleton;
+    }
 }

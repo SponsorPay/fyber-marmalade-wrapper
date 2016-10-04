@@ -46,7 +46,7 @@ void fyber_marmalade_setup_platform(const char* appId, const char* securityToken
 
 void requestOffers_platform();
 
-int showAd_platform();
+bool showAd_platform();
 
 void fyber_cache_pause_download_platform();
 

@@ -33,7 +33,7 @@ void requestOffers()
 	requestOffers_platform();
 }
 
-int showAd()
+bool showAd()
 {
 	return showAd_platform();
 }

@@ -34,10 +34,10 @@ static void requestOffers_wrap()
     IwTrace(EXTFYBER_VERBOSE, ("calling ExtFyber func on main thread: requestOffers"));
     s3eEdkThreadRunOnOS((s3eEdkThreadFunc)requestOffers, 0);
 }
-static int showAd_wrap()
+static bool showAd_wrap()
 {
     IwTrace(EXTFYBER_VERBOSE, ("calling ExtFyber func on main thread: showAd"));
-    return (int)(intptr_t)s3eEdkThreadRunOnOS((s3eEdkThreadFunc)showAd, 0);
+    return (bool)(intptr_t)s3eEdkThreadRunOnOS((s3eEdkThreadFunc)showAd, 0);
 }
 #define fyber_marmalade_setup fyber_marmalade_setup_wrap
 
