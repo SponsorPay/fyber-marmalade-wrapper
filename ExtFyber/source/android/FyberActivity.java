@@ -14,7 +14,6 @@ import com.fyber.requesters.VirtualCurrencyCallback;
 import com.fyber.requesters.VirtualCurrencyRequester;
 import com.fyber.utils.FyberLogger;
 
-import com.jirbo.adcolony.AdColony;
 import com.ideaworks3d.marmalade.LoaderAPI;
 
 import android.content.Intent;
