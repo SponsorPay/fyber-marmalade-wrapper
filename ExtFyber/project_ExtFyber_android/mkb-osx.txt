@@ -1,0 +1,3 @@
+SCONS;build_extfyber_android_linux_scons_x86;
+SCONS;build_extfyber_android_linux_scons_arm;
+SCONS;build_extfyber_android_linux_scons_aarch64;
