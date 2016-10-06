@@ -18,6 +18,9 @@ librarypath "3rdPartyLibs/guava-18.0.jar"
 librarypath "3rdPartyLibs/javapoet-1.5.1.jar"
 librarypath "3rdPartyLibs/javassist-3.18.2-GA.jar"
 librarypath "3rdPartyLibs/reflections-0.9.10.jar"
+librarypath "3rdPartyLibs/fyber-vungle-4.0.2-r1.jar"
+librarypath "3rdPartyLibs/fyber-applovin-6.3.0-r1.jar"
+librarypath "3rdPartyLibs/fyber-hyprmx-4.0.1-r3.jar"
 
 
 option output-name=lib/android/ExtFyber.jar
