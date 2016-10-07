@@ -14,6 +14,7 @@ import com.fyber.requesters.VirtualCurrencyCallback;
 import com.fyber.requesters.VirtualCurrencyRequester;
 import com.fyber.utils.FyberLogger;
 
+import com.ideaworks3d.marmalade.LoaderAPI;
 import com.ideaworks3d.marmalade.LoaderActivity;
 
 import android.content.Intent;
@@ -65,7 +66,7 @@ public class FyberActivity extends LoaderActivity implements RequestCallback {
 			debugLog("setup appId = " + appId + "; securityToken = " + securityToken + "; userId = " + userId + "; bucketId = " + bucketId + "; conditionGroupId = " + conditionGroupId);
 
 			Fyber.Settings fyberSettings = Fyber
-					.with(appId, this)
+					.with(appId, LoaderAPI.getActivity())
 					.withSecurityToken(securityToken)
 					.start();
 
@@ -87,12 +88,8 @@ public class FyberActivity extends LoaderActivity implements RequestCallback {
 			//if we already have an Intent, we start the ad Activity
 			if (isIntentAvailable()) {
 				//start the ad format specific Activity
-				this.startActivityForResult(intent, getRequestCode());
+				LoaderAPI.getActivity().startActivityForResult(intent, getRequestCode());
 				return true;
-			} else {
-				isRequestingState = true;
-				//perform the ad request. Each Fragment has its own implementation.
-				performRequest();
 			}
 		}
 
@@ -102,7 +99,7 @@ public class FyberActivity extends LoaderActivity implements RequestCallback {
 	public void performRequest() {
 		RewardedVideoRequester
             .create(this)
-            .request(this);
+            .request(LoaderAPI.getActivity());
 	}
 
     @Override
