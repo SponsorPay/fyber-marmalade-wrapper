@@ -1,4 +1,4 @@
-<activity android:name="com.fyber.ads.videos.RewardedVideoActivity" android:configChanges="keyboardHidden|orientation|screenSize"/>
+<activity android:name="com.fyber.ads.videos.RewardedVideoActivity" android:configChanges="keyboardHidden|orientation|screenSize" hardwareAccelerated="true" />
 
 <service android:name="com.fyber.cache.CacheVideoDownloadService" android:exported="false"/>
 
