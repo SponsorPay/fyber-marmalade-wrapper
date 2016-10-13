@@ -4,4 +4,5 @@
 /interface/
 /stamp/
 /project_ExtFyber_android/*.ini
+/project_ExtFyber_android_java/*.ini
 .DS_Store
