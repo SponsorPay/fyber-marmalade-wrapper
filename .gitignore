@@ -1,7 +1,7 @@
-build_*
-lib/
-h/
-interface/
-stamp/
-project_ExtFyber_android/*.ini
+/build_*
+/lib/
+/h/
+/interface/
+/stamp/
+/project_ExtFyber_android/*.ini
 .DS_Store
