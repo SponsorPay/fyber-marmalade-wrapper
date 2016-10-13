@@ -107,10 +107,11 @@ public class FyberActivity implements RequestCallback, MainActivity.Listener {
 		try {
 			debugLog("setup appId = " + appId + "; securityToken = " + securityToken + "; userId = " + userId + "; bucketId = " + bucketId + "; conditionGroupId = " + conditionGroupId);
 
-			Fyber.Settings fyberSettings = Fyber
-					.with(appId, LoaderAPI.getActivity())
-					.withSecurityToken(securityToken)
-					.start();
+            Fyber.Settings fyberSettings = Fyber
+                .with(appId, LoaderAPI.getActivity())
+                .withSecurityToken(securityToken)
+                .withUserId(userId)
+                .start();
 
 			User.addCustomValue("bucketId", bucketId);
 			User.addCustomValue("conditionGroupId", conditionGroupId);
