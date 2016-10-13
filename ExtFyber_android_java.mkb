@@ -7,6 +7,8 @@ files
     (source/android)
     ExtFyber.java
     FyberActivity.java
+    FyberActivityFactory.java
+    MainActivity.java
 }
 
 librarypath "$MARMALADE_ROOT/s3e/deploy/plugins/android/android.jar"

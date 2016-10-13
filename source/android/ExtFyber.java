@@ -5,17 +5,11 @@ Add android-specific functionality here.
 
 These functions are called via JNI from native code.
 */
-/*
- * NOTE: This file was originally written by the extension builder, but will not
- * be overwritten (unless --force is specified) and is intended to be modified.
- */
-package com.teamlava.fyberwrapper;
+package com.fyber.marmalade;
 
 import com.ideaworks3d.marmalade.LoaderAPI;
-import com.teamlava.fyberwrapper.FyberActivity;
+import com.fyber.marmalade.FyberActivity;
 import com.fyber.cache.CacheManager;
-// Comment in the following line if you want to use ResourceUtility
-// import com.ideaworks3d.marmalade.ResourceUtility;
 
 import android.util.Log;
 

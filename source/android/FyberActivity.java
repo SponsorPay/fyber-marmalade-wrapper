@@ -1,4 +1,4 @@
-package com.teamlava.fyberwrapper;
+package com.fyber.marmalade;
 
 import com.fyber.ads.AdFormat;
 import com.fyber.ads.videos.RewardedVideoActivity;
@@ -15,7 +15,8 @@ import com.fyber.requesters.VirtualCurrencyRequester;
 import com.fyber.utils.FyberLogger;
 
 import com.ideaworks3d.marmalade.LoaderAPI;
-import com.ideaworks3d.marmalade.LoaderActivity;
+
+import com.android.mainactivity.MainActivity;
 
 import android.content.Intent;
 import android.util.Log;
@@ -23,7 +24,7 @@ import android.os.Bundle;
 import android.app.Activity;
 
 @FyberSDK
-public class FyberActivity extends LoaderActivity implements RequestCallback {
+public class FyberActivity implements RequestCallback, MainActivity.Listener {
 	protected static final int INTERSTITIAL_REQUEST_CODE = 8792;
 	protected static final int OFFERWALL_REQUEST_CODE = 8795;
 	protected static final int REWARDED_VIDEO_REQUEST_CODE = 8796;
@@ -45,7 +46,7 @@ public class FyberActivity extends LoaderActivity implements RequestCallback {
 	private boolean isRequestingState;
 	protected Intent intent;
 
-	public static FyberActivity singleton = new FyberActivity();
+	public static FyberActivity singleton;
 
 	protected int getRequestCode() {
 		return REWARDED_VIDEO_REQUEST_CODE;
@@ -60,8 +61,49 @@ public class FyberActivity extends LoaderActivity implements RequestCallback {
         Log.d(TAG, message);
     }
 
+    /**
+     * MainActivity.Listener interface implementations.
+     *
+     * For Marmalade applications with a custom main activity these functions
+     * must be called at the appropriate time.
+     */
+    public void onCreate(Bundle b) {
+        DEBUG_ENABLED = MainActivity.getBooleanConfig(DEBUG_CONFIG_KEY);
+        Log.d(TAG, "FyberActivity: DEBUG_ENABLED is " + DEBUG_ENABLED);
+
+        FyberLogger.enableLogging(DEBUG_ENABLED);
+        if (singleton != null)
+        {
+            debugLog("FyberActivity created more than once, it's supposed to be a singleton from android-custom-activity");
+        }
+        singleton = this;
+    }
+
+        public void onStart() {
+        
+    }
+
+    public void onRestart() {
+    }
+    
+    public void onStop() {
+    }
+
+    public void onPause() {
+    }
+
+	public void onResume() {
+	}
+
+    public void onDestroy() {
+        singleton = null;
+    }
+
+
+    /**
+     * Fyber wrapper functions
+     */
 	public void setup(String appId, String securityToken, String userId, String bucketId, String conditionGroupId) {
-		FyberLogger.enableLogging(true);
 		try {
 			debugLog("setup appId = " + appId + "; securityToken = " + securityToken + "; userId = " + userId + "; bucketId = " + bucketId + "; conditionGroupId = " + conditionGroupId);
 
@@ -81,7 +123,6 @@ public class FyberActivity extends LoaderActivity implements RequestCallback {
 		ExtFyber.safe_notifyStatusChange(EXT_FYBER_STARTED);
 	}
 
-    // when a button is clicked, request or show the ad according to Intent availability
 	public boolean showAd() {
 		//avoid requesting an ad when already requesting
 		if (!isRequestingState()) {
@@ -124,24 +165,8 @@ public class FyberActivity extends LoaderActivity implements RequestCallback {
 		ExtFyber.safe_notifyStatusChange(EXT_FYBER_AD_REQUEST_ERROR);
 	}
 
-	private void resetRequestingState() {
-		isRequestingState = false;
-	}
-
-	private void resetIntent() {
-		intent = null;
-	}
-
-	protected boolean isIntentAvailable() {
-		return intent != null;
-	}
-
-	protected boolean isRequestingState() {
-		return isRequestingState;
-	}
-
     @Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		resetIntent();
 
 		if (resultCode == Activity.RESULT_OK && requestCode == REWARDED_VIDEO_REQUEST_CODE) {
@@ -163,6 +188,26 @@ public class FyberActivity extends LoaderActivity implements RequestCallback {
                     debugLog("Unknown Engagement Status: " + status);
             }
 		}	
+	}
+
+
+    /**
+     * Utility functions
+     */
+	private void resetRequestingState() {
+		isRequestingState = false;
+	}
+
+	private void resetIntent() {
+		intent = null;
+	}
+
+	protected boolean isIntentAvailable() {
+		return intent != null;
+	}
+
+	protected boolean isRequestingState() {
+		return isRequestingState;
 	}
 
     public static FyberActivity getInstance() {

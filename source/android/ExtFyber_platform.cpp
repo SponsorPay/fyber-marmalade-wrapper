@@ -75,7 +75,7 @@ s3eResult ExtFyberInit_platform()
     };
 
     // Get the extension class
-    jclass cls = s3eEdkAndroidFindClass("com/teamlava/fyberwrapper/ExtFyber");
+    jclass cls = s3eEdkAndroidFindClass("com/fyber/marmalade/ExtFyber");
     if (!cls)
         goto fail;
 
