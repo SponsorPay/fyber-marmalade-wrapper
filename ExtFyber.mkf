@@ -73,8 +73,4 @@ deployments
 
     android-java-source-version = "1.7"
     android-java-target-version = "1.7"
-    android-sdk-build-tools-version = "23.0.3"
-    android-sdk-platform-version = "23"
-
-    android-custom-activity="com.teamlava.fyberwrapper.FyberActivity"
 }
